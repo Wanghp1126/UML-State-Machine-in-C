@@ -1,5 +1,7 @@
 根据代码规范修改如下：
 
+对所有struct禁止使用typedef
+
 state_handler  ----> StateHandler
 Handler        ----> handler
 Entry          ----> entry
