@@ -1,0 +1,25 @@
+根据代码规范修改如下：
+
+state_handler  ----> StateHandler
+Handler        ----> handler
+Entry          ----> entry
+Exit           ----> exit
+Id             ----> id
+Parent         ----> parent
+Node           ----> child
+Level          ----> level
+state_t        ----> StateMachineState_t
+hierarchical_state ----> HierarchicalState
+finite_state   ----> FiniteState
+state_machine_t ----> StateMachine_t
+Event           ----> event
+State           ----> state
+state_machine_result_t  ----> StateMachineResultEnum
+state_machine_event_logger ----> StateMachineEventLoggerHandler
+state_machine_result_logger ----> StateMachineResultLoggerHandler
+dispatch_event  ----> DispatchEvent
+switch_state ----> SwitchState
+traverse_state ----> TraverseState
+pState_Machine ----> pStateMachine
+pTarget_State ----> pTargetState
+pTarget_Path ----> pTargetPath
