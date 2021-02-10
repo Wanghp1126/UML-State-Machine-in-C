@@ -240,7 +240,7 @@ static const struct StateMachineState_t L2StateMachineStatus[] =
         .entry   = entry_handler, \
         .handler = do_handler,    \
         .exit = exit_handler,     \
-		.id = name,               \
+	.id = name,               \
 }
 #define HSM_ADD_STATE(name, entry_handler, do_handler, exit_handler, level, parent, child) \
     [name] = {                    \
