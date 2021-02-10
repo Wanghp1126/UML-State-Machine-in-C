@@ -93,7 +93,7 @@ struct StateMachineState_t {
 struct StateMachine_t
 {
    uint32_t event;          //!< 挂起的事件
-   const struct StateMachineState_t* State; //!< 状态机中的状态
+   const struct StateMachineState_t* state; //!< 状态机中的状态
 };
 
 /*
