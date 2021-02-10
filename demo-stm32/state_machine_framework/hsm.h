@@ -29,20 +29,20 @@
 // 0 : disable hierarchical state machine. Only Finite state machine is supported.
 // !0 : enable Hierarchical state machine. Both finite and hierarchical state machine is supported.
 #ifndef HIERARCHICAL_STATES
-#define  HIERARCHICAL_STATES    !0
+#define  HIERARCHICAL_STATES    ( !0 )
 #endif // HIERARCHICAL_STATES
 
 //! The logging of state machine
 // 0: disable the state machine logger
 // !0: enable the state machine logger
 #ifndef STATE_MACHINE_LOGGER
-#define STATE_MACHINE_LOGGER     !0        
+#define STATE_MACHINE_LOGGER     ( !0 )      
 #endif // STATE_MACHINE_LOGGER
 
 // 0: disable variable length array used in hsm.c
 // !0: enable variable length aray used in hsm.c
 #ifndef HSM_USE_VARIABLE_LENGTH_ARRAY
-#define HSM_USE_VARIABLE_LENGTH_ARRAY  !0
+#define HSM_USE_VARIABLE_LENGTH_ARRAY  ( !0 )
 #endif
 
 /*
