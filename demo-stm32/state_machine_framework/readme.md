@@ -102,8 +102,11 @@ typedef enum StateMachineResultEnum (*StateHandler)(struct StateMachine_t* const
 - handler: 指向此状态处理事件的函数指针
 - entry: 指向进入此状态时需要处理动作的函数指针
 - exit: 指向退出此状态时需要处理动作的函数指针
+
 >handler必须初始化。
+
 >entry和exit时可选项；不需要时可以初始化为null。
+
 >StateMachineState_t 可以定义为 **const** ，以便将其存储在只读存储器中。
 
 有限状态机，使用示例：
@@ -256,7 +259,7 @@ static const struct StateMachineState_t MyStateMachineStatus[] =
 {
     FSM_ADD_STATE(IDLE_STATE, idle_entry_handler, idle_do_handler, idle_exit_handler)，
     FSM_ADD_STATE(START_STATE, start_entry_handler, start_do_handler, start_exit_handler)，
-	FSM_ADD_STATE(STOP_STATE, stop_entry_handler, stop_do_handler, stop_exit_handler)，
+    FSM_ADD_STATE(STOP_STATE, stop_entry_handler, stop_do_handler, stop_exit_handler)，
 };
 ```
 ## 2.5 事件调度
@@ -266,11 +269,17 @@ static const struct StateMachineState_t MyStateMachineStatus[] =
 enum StateMachineResultEnum DispatchEvent(struct StateMachine_t* const pStateMachine[], uint32_t quantity ...
 ```
 该函数将一个状态机数组`pStateMachine[]`和该数组中的状态机数`quantity`作为参数。 它遍历数组中的所有状态机，如果有状态机有未处理的事件，则将事件分派给状态机。该框架支持基于优先级的事件调度，数组中状态机的索引决定状态机的优先级，索引越低优先级越高。这意味着，如果两个或更多状态机有未处理事件，则调度程序将首先调度优先级最高（数组中最低索引）的事件。
+
 一旦事件被调度，它将不会被更高优先级的状态机抢占。处理事件后，调度程序重新从`pStateMachine[]`第一个（最高优先级）状态机开始迭代，以检查未处理事件。仅在完成当前事件处理后，才将事件分发到更高优先级的状态机。
+
 如果事件处理时，产生自我触发（即返回`TRIGGERED_TO_SELF`），调度程序将自动调度进行自我触发事件的处理。
+
 当状态机数组中没有任何未处理事件或未成功处理事件时，该函数返回。
+
 >`DispatchEvent`永远不会返回 `TRIGGERED_TO_SELF`
+
 >所有事件都处理成功，返回`EVENT_HANDLER`
+
 >有事件未能成功处理，返回`EVENT_UN_HANDLER`
 
 定期调用此函数，推荐使用方法是：
@@ -303,6 +312,7 @@ void main()
 enum StateMachineResultEnum SwitchState(struct StateMachine_t* const pStateMachine,const struct StateMachineState_t* const pTargetState);
 ```
 >当框架配置为为有限状态机时，使用`SwitchState`，它调用源状态的退出动作，然后调用目标状态的进入动作。
+
 >当框架配置为为分层状态机时，如果源状态和目标状态具有共同的父级状态，也可以使用`SwitchState`。
 ```C
 enum StateMachineResultEnum TraverseState(struct StateMachine_t* const pStateMachine,const struct StateMachineState_t* pTargetState);
