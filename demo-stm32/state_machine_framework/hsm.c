@@ -59,7 +59,7 @@ do{                                                             \
 enum StateMachineResultEnum 
 	DispatchEvent(struct StateMachine_t* const pStateMachine[]
 	, uint32_t quantity
-#if STATE_MACHINE_LOGGER
+#if ( STATE_MACHINE_LOGGER != 0 )
 	, StateMachineEventLoggerHandler event_logger
 	, StateMachineResultLoggerHandler result_logger
 #endif // STATE_MACHINE_LOGGER
@@ -81,12 +81,12 @@ enum StateMachineResultEnum
 		pState = pStateMachine[index]->state;
 		do
 		{
-#if STATE_MACHINE_LOGGER
+#if ( STATE_MACHINE_LOGGER != 0 )
 			event_logger(index, pState->id, pStateMachine[index]->event);
 #endif // STATE_MACHINE_LOGGER
 			// Call the state handler.
 			result = pState->handler(pStateMachine[index]);
-#if STATE_MACHINE_LOGGER
+#if ( STATE_MACHINE_LOGGER != 0 )
 			result_logger(pStateMachine[index]->state->id, result);
 #endif // STATE_MACHINE_LOGGER
 
@@ -105,7 +105,7 @@ enum StateMachineResultEnum
 				index = 0;  // Restart the event dispatcher from the first state machine.
 				break;
 
-#if HIERARCHICAL_STATES
+#if ( HIERARCHICAL_STATES != 0)
 				// State handler could not handled the event.
 				// Traverse to its parent state and dispatch event to parent state handler.
 			case EVENT_UN_HANDLED:
@@ -165,7 +165,7 @@ enum StateMachineResultEnum
 	return EVENT_HANDLED;
 }
 
-#if HIERARCHICAL_STATES
+#if ( HIERARCHICAL_STATES != 0 )
 /** \brief Traverse to target state. It calls exit functions before leaving
 	  the source state & calls entry function before entering the target state.
  *
