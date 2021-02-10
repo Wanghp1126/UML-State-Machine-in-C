@@ -52,11 +52,10 @@
  //! List of state machine result code
 enum StateMachineResultEnum
 {
-	EVENT_HANDLED,     //!< Event handled successfully.
-	EVENT_UN_HANDLED,  //!< Event could not be handled.
-	TRIGGERED_TO_SELF, //!< Handler handled the Event successfully, and posted new event to itself.
+	EVENT_HANDLED,     //!< 事件处理成功
+	EVENT_UN_HANDLED,  //!< 事件未能处理
+	TRIGGERED_TO_SELF, //!< 事件处理成功并自我触发
 };
-
 /*
  *  --------------------- STRUCTURE ---------------------
  */
@@ -66,37 +65,36 @@ typedef enum StateMachineResultEnum (*StateHandler)(struct StateMachine_t* const
 typedef void (*StateMachineEventLoggerHandler)(uint32_t state_machine, uint32_t state, uint32_t event);
 typedef void (*StateMachineResultLoggerHandler)(uint32_t state, enum StateMachineResultEnum result);
 
-#if HIERARCHICAL_STATES != 0
-//! Hierarchical state structure �ֲ�״̬�ṹ 
+#if ( HIERARCHICAL_STATES != 0 )
+//! Hierarchical state structure 分层状态结构 
 struct StateMachineState_t {
-	StateHandler entry;      //!< Entry action in this state
-	StateHandler handler;    //!< Do action in this state
-	StateHandler exit;       //!< Exit action in this state.
+	StateHandler entry;      //!< 此状态的 Entry 动作（Entry Action）
+	StateHandler handler;    //!< 此状态的 Do 动作（Do Action）
+	StateHandler exit;       //!< 此状态的 Exit 动作（Exit Action）
 	
-	uint32_t id;          //!< unique identifier of a state within the single state machine
+	uint32_t id;          //!< 状态机内的状态的唯一标识
 
-	const struct StateMachineState_t* const parent;    //!< Parent state of the current state.
-	const struct StateMachineState_t* const child;     //!< Child states of the current state.
-	uint32_t level;                 //!< Hierarchy level from the top state.
+	const struct StateMachineState_t* const parent;    //!< 当前状态的父级状态
+	const struct StateMachineState_t* const child;     //!< 当前状态的子级状态
+	uint32_t level;                 //!< 从最高状态开始的层次结构级别，数值越小级别越高
 };
 #else
-//! finite state structure ����״̬�ṹ
+//! finite state structure 有限状态结构
 struct StateMachineState_t {
-	StateHandler entry;      //!< Entry action in this state
-	StateHandler handler;    //!< Do action in this state
-	StateHandler exit;       //!< Exit action in this state.
+	StateHandler entry;      //!< 此状态的 Entry 动作（Entry Action）
+	StateHandler handler;    //!< 此状态的 Do 动作（Do Action）
+	StateHandler exit;       //!< 此状态的 Exit 动作（Exit Action）
 	
-	uint32_t id;          //!< unique identifier of a state within the single state machine
+	uint32_t id;          //!< 状态机内的状态的唯一标识
 };
 #endif
 
 //! Abstract state machine structure
 struct StateMachine_t
 {
-	uint32_t event;              //!< Pending Event for state machine, cannot be 0.
-	const struct StateMachineState_t* state; //!< State of state machine.
+   uint32_t event;          //!< 挂起的事件
+   const struct StateMachineState_t* State; //!< 状态机中的状态
 };
-
 
 /*
  *  --------------------- EXPORTED FUNCTION ---------------------
@@ -109,13 +107,13 @@ extern "C" {
 	extern enum StateMachineResultEnum 
 		DispatchEvent(struct StateMachine_t* const pStateMachine[],
 		uint32_t quantity
-#if STATE_MACHINE_LOGGER
+#if ( STATE_MACHINE_LOGGER != 0 )
 		, StateMachineEventLoggerHandler event_logger
 		, StateMachineResultLoggerHandler result_logger
 #endif // STATE_MACHINE_LOGGER
 		);
 
-#if HIERARCHICAL_STATES
+#if ( HIERARCHICAL_STATES != 0 )
 	extern enum StateMachineResultEnum 
 		TraverseState(struct StateMachine_t* const pStateMachine,
 		const struct StateMachineState_t* pTargetState);
